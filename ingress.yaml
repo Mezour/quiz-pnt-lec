@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pnt-quiz-ingress
+  namespace: pnt-quiz  
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    # Rule untuk frontend
+    - host: pnt-quiz-front.org  
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pnt-frontend-service 
+                port:
+                  number: 80  
+
+    # Rule untuk backend
+    - host: pnt-quiz-back.org   
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pnt-backend-service  
+                port:
+                  number: 80 

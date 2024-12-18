@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: pnt-quiz  
+  labels:
+    app: frontend
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend-container
+          image: PNT-web-exercise:v0.1  
+          ports:
+            - containerPort: 80  
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: pnt-frontend-service
+    namespace: pnt-quiz  
+  spec:
+    selector:
+      app: frontend
+    ports:
+      - protocol: TCP
+        port: 80 
+        targetPort: 80  
+    type: ClusterIP  
+
+
